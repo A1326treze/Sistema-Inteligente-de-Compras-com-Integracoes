@@ -20,7 +20,7 @@ Uma interface mobile otimizada para coleta de dados direto no mercado _(in loco)
 ## Power BI
 Em desenvolvimento. Migração para uma arquitetura de dados mais robusta, visando fornecer maior granularidade de filtros e modelagem relacional.
 
-## Skills usadas:
+## Skills utilizadas:
 _Linguagens_: Google AppScript (JavaScript).
 _Ferramentas_: Google Sheets Avançado, Looker Studio, Power BI, AppSheet.
 _Conceitos_: ETL, Modelagem de Dados, UI/UX para Planilhas, Gestão de Inventário.
