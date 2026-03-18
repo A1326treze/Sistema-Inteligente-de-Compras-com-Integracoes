@@ -11,7 +11,7 @@ Desenvolvimento de automações em GoogleScript _(JavaScript)_ para otimizar a p
 - **Limpeza da Matriz de Pesquisa** para agilizar a inclusão de novos preços;
 - **Ocultação de coluna** para mostrar apenas as lojas essenciais a serem pesquisadas;
 - **Tratamento e Limpeza de Dados _(ETL)_** para padronização automatizada de strings que evitam erros de duplicidade e pesquisa (ex: espaços extras ou caracteres invisíveis);
-- - **Filtro de setores** para mostrar apenas o essencial a ser visto;
+- **Filtro de setores** para mostrar apenas o essencial a ser visto;
 - **Sincronização da Matriz de preço com AppSheet** para integração completa do Sistema ao celular.
 ## Google Looker Studio
 Gráficos que facilitam a visualização de preços e suas flutuações sobre diferentes itens, pacotes e marcas, sendo possível identificar tendências de preços e sazonalidade.
