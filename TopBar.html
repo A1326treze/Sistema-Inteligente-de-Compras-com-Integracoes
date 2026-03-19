@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      /* Definição das variáveis de cores globais (tema verde/escuro) */
+      :root{
+        --bg:#0f2f1f;
+        --btn:#184a32;
+        --btnHover:#1f5e40;
+        --active:#2bb673;
+        --text:#ffffff;
+      }
+      
+      html, body{
+        margin:0;
+        padding:0;
+        background:var(--bg);
+        font-family: Arial, sans-serif;
+      }
+
+      /* ocupa quase tudo, com margem mínima */
+      .wrap{
+        display:flex;
+        align-items:center;
+        padding:4px 6px;  /* menor margem */
+      }
+
+      /* Contêiner da lista de botões com scroll horizontal */
+      .tabs{
+        display:flex;
+        align-items:center;
+        gap:5%;          /* menor espaçamento */
+        overflow-x:auto;
+        white-space:nowrap;
+        width:100%;
+      }
+
+      /* Estilização padrão dos botões de navegação */
+      .tab{
+        border:0;
+        color:var(--text);
+        background:var(--btn);
+        padding:11px 13px;  /* menor botão */
+        border-radius:12px;
+        cursor:pointer;
+        font-weight:700;
+        font-size:13px;
+        transition:transform .12s ease, background .12s ease, box-shadow .12s ease;
+      }
+      .tab:hover{ background:var(--btnHover); }
+      
+      /* Destaque visual para o botão da aba atualmente ativa */
+      .tab.active{
+        background:var(--active);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(0,0,0,.30);
+      }
+
+      /* esconder scrollbar (visual) */
+      .tabs::-webkit-scrollbar{ height:6px; }
+      .tabs::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.12); border-radius:999px; }
+      .tabs::-webkit-scrollbar-track{ background:transparent; }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="tabs" id="tabs"></div>
+    </div>
+
+    <script>
+      let tabs = [];
+      let active = "";
+
+      /**
+       * Limpa o contêiner e recria os botões HTML baseando-se no array de 'tabs'.
+       * Aplica a classe 'active' ao botão correspondente à aba atual.
+       * @returns {void}
+       */
+      function render(){
+        const box = document.getElementById('tabs');
+        box.innerHTML = "";
+        tabs.forEach(t => {
+          const btn = document.createElement('button');
+          btn.className = 'tab' + (t.name === active ? ' active' : '');
+          btn.textContent = t.label;
+          btn.onclick = () => {
+            google.script.run.goToSheet(t.name);
+            setTimeout(updateActiveOnly, 200);
+          };
+          box.appendChild(btn);
+        });
+      }
+
+      /**
+       * Função de inicialização. Busca os dados da Topbar (abas disponíveis e ativa) 
+       * do lado do servidor (Apps Script) e renderiza a interface.
+       * @returns {void}
+       */
+      function load(){
+        google.script.run.withSuccessHandler(data => {
+          tabs = data.tabs || [];
+          active = data.active || "";
+          render();
+        }).getTopbarData();
+      }
+
+      /**
+       * Verifica no servidor qual é a aba ativa no momento.
+       * Atualiza a renderização apenas se a aba ativa tiver mudado.
+       * @returns {void}
+       */
+      function updateActiveOnly(){
+        google.script.run.withSuccessHandler(name => {
+          if (name && name !== active){
+            active = name;
+            render();
+          }
+        }).getActiveSheetName();
+      }
+
+      // Executa a carga inicial
+      load();
+      // Define um intervalo para checar se o usuário mudou de aba manualmente a cada 900ms
+      setInterval(updateActiveOnly, 900);
+    </script>
+  </body>
+</html>
